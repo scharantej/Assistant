@@ -1,0 +1,19 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Task Manager</title>
+</head>
+<body>
+<h1>Task Manager</h1>
+<ul>
+{% for task in tasks %}
+<li>{{ task }}</li>
+{% endfor %}
+</ul>
+<a href="/create_task">Create a new task</a>
+</body>
+</html>
+
+
