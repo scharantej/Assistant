@@ -3,16 +3,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Task Manager</title>
+<title>Todo List</title>
 </head>
 <body>
-<h1>Task Manager</h1>
+<h1>Todo List</h1>
 <ul>
 {% for task in tasks %}
 <li>{{ task }}</li>
 {% endfor %}
 </ul>
-<a href="/create_task">Create a new task</a>
+<a href="/add_task">Add a task</a>
 </body>
 </html>
 
