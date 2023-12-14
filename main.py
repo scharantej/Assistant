@@ -3,70 +3,39 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-tasks = []
+jokes = []
 
-@app.route("/")
-def index():
-    return render_template("index.html", tasks=tasks)
+@app.route('/')
+def home():
+    return render_template('index.html', joke=random.choice(jokes))
 
-@app.route("/add_task", methods=["GET", "POST"])
-def add_task():
-    if request.method == "POST":
-        task = request.form.get("task")
-        tasks.append(task)
-        return redirect(url_for("index"))
-    return render_template("add_task.html")
+@app.route('/create_joke', methods=['GET', 'POST'])
+def create_joke():
+    if request.method == 'POST':
+        joke = request.form['joke']
+        jokes.append(joke)
+        return redirect(url_for('list_jokes'))
+    else:
+        return render_template('create_joke.html')
 
-@app.route("/edit_task/<int:task_id>", methods=["GET", "POST"])
-def edit_task(task_id):
-    if request.method == "POST":
-        task = request.form.get("task")
-        tasks[task_id] = task
-        return redirect(url_for("index"))
-    return render_template("edit_task.html", task_id=task_id, task=tasks[task_id])
+@app.route('/list_jokes')
+def list_jokes():
+    return render_template('list_jokes.html', jokes=jokes)
 
-@app.route("/delete_task/<int:task_id>")
-def delete_task(task_id):
-    tasks.pop(task_id)
-    return redirect(url_for("index"))
+@app.route('/edit_joke/<joke_id>', methods=['GET', 'POST'])
+def edit_joke(joke_id):
+    joke = jokes[int(joke_id)]
+    if request.method == 'POST':
+        joke = request.form['joke']
+        jokes[int(joke_id)] = joke
+        return redirect(url_for('list_jokes'))
+    else:
+        return render_template('edit_joke.html', joke=joke)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+@app.route('/delete_joke/<joke_id>')
+def delete_joke(joke_id):
+    del jokes[int(joke_id)]
+    return redirect(url_for('list_jokes'))
 
-
-main.py file:
-
-
-from flask import Flask, render_template, request, redirect, url_for
-
-app = Flask(__name__)
-
-tasks = []
-
-@app.route("/")
-def index():
-    return render_template("index.html", tasks=tasks)
-
-@app.route("/add_task", methods=["GET", "POST"])
-def add_task():
-    if request.method == "POST":
-        task = request.form.get("task")
-        tasks.append(task)
-        return redirect(url_for("index"))
-    return render_template("add_task.html")
-
-@app.route("/edit_task/<int:task_id>", methods=["GET", "POST"])
-def edit_task(task_id):
-    if request.method == "POST":
-        task = request.form.get("task")
-        tasks[task_id] = task
-        return redirect(url_for("index"))
-    return render_template("edit_task.html", task_id=task_id, task=tasks[task_id])
-
-@app.route("/delete_task/<int:task_id>")
-def delete_task(task_id):
-    tasks.pop(task_id)
-    return redirect(url_for("index"))
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run()
